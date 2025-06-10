@@ -22,17 +22,16 @@ def main():
         / "elevenlabs"
     )
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    DEFAULT_VOICE_NAME = os.getenv("DEFAULT_VOICE_NAME", "Jessica")
+    DEFAULT_VOICE_NAME = os.getenv("DEFAULT_VOICE_NAME", "Sarah")
 
     client = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 
     voices = get_voices(client, CACHE_DIR)
+    logger.debug(f"Voices: {[v.name for v in voices]}")
 
     args = parse_args(["Any", "Male", "Female", "All"] + [str(v.name) for v in voices])
     if args.debug:
         logger.setLevel(logging.DEBUG)
-
-    logger.debug(f"Voices: {[v.name for v in voices]}")
 
     text = " ".join(args.text)
     model_id = get_latest_model(client, CACHE_DIR)
@@ -72,7 +71,7 @@ def main():
 def get_voices(client: ElevenLabs, cache_dir: Path):
     voices_path = Path(os.path.join(cache_dir, "voices.pickle"))
 
-    if voices_path.is_file():
+    if voices_path.is_file() and False:
         logger.debug("Loading voices from cache")
         with open(voices_path, "rb") as fp:
             voices = pickle.load(fp)
