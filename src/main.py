@@ -22,7 +22,7 @@ def main():
         / "elevenlabs"
     )
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    DEFAULT_VOICE_NAME = os.getenv("DEFAULT_VOICE_NAME", "Sarah")
+    DEFAULT_VOICE_NAME = os.getenv("DEFAULT_VOICE_NAME", "Alice")
 
     client = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 
@@ -59,7 +59,7 @@ def main():
         voice = random.choice(voice_choices)
     else:
         voice_name = args.voice or DEFAULT_VOICE_NAME
-        voice = next(v for v in voices if v.name == voice_name)
+        voice = next(v for v in voices if v.name and voice_name in v.name)
 
     assert type(voice) is Voice
 
